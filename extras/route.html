@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Grab A and B Markers for Route</title>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClWWKY8Cug6fO0UfInONtV-9qPDgcp8HI"></script>
+  <script>
+    let map;
+    let markers = [];
+    let directionsService;
+    let directionsRenderer;
+    let routes = [];
+    let direction = 'right';
+
+    let busIconNorth = '';
+    let busIconNorthEast = '../assets/images/home/markers/orange-bus/northeastO.png';
+    let busIconEast = '../assets/images/home/markers/orange-bus/eastO.png';
+    let busIconSouthEast = '../assets/images/home/markers/orange-bus/southeastO.png';
+    let busIconSouth = '../assets/images/home/markers/orange-bus/southO.png';
+    let busIconSouthWest = '../assets/images/home/markers/orange-bus/southwestO.png';
+    let busIconWest = '../assets/images/home/markers/orange-bus/westO.png';
+    let busIconNorthWest = '../assets/images/home/markers/orange-bus/northwestO.png';
+    
+    const busIcon = {
+        north: '../assets/images/home/markers/orange-bus/northO.png',
+        northEast: '../assets/images/home/markers/orange-bus/northeastO.png',
+        east: '../assets/images/home/markers/orange-bus/eastO.png',
+        southEast: '../assets/images/home/markers/orange-bus/southeastO.png',
+        south: '../assets/images/home/markers/orange-bus/southO.png',
+        southWest: '../assets/images/home/markers/orange-bus/southwestO.png',
+        west: '../assets/images/home/markers/orange-bus/westO.png',
+        northWest: '../assets/images/home/markers/orange-bus/northwestO.png',
+    };
+    
+    let routeData = [
+    {"lat": -34.019470000000005,"lng": 22.46694},{"lat": -34.019360000000006,"lng": 22.46636},{"lat": -34.0193,"lng": 22.466040000000003},{"lat": -34.019290000000005,"lng": 22.466},{"lat": -34.019270000000006,"lng": 22.46601},{"lat": -34.01896,"lng": 22.46611},{"lat": -34.01872,"lng": 22.46618},{"lat": -34.01832,"lng": 22.46627},{"lat": -34.01821,"lng": 22.46627},{"lat": -34.01791,"lng": 22.46619},{"lat": -34.01798,"lng": 22.465280000000003},{"lat": -34.017990000000005,"lng": 22.46517},{"lat": -34.017880000000005,"lng": 22.46468},{"lat": -34.017480000000006,"lng": 22.463120000000004},{"lat": -34.01722,"lng": 22.46235},{"lat": -34.017010000000006,"lng": 22.46178},{"lat": -34.01668,"lng": 22.460330000000003},{"lat": -34.01662,"lng": 22.460150000000002},{"lat": -34.01661,"lng": 22.459850000000003},{"lat": -34.016650000000006,"lng": 22.459410000000002},{"lat": -34.0167,"lng": 22.45914},{"lat": -34.01675,"lng": 22.458900000000003},{"lat": -34.016760000000005,"lng": 22.45869},{"lat": -34.01675,"lng": 22.45848},{"lat": -34.01672,"lng": 22.45832},{"lat": -34.016650000000006,"lng": 22.457970000000003},{"lat": -34.01644,"lng": 22.457330000000002},{"lat": -34.01623,"lng": 22.45664},{"lat": -34.01587,"lng": 22.455050000000004},{"lat": -34.015710000000006,"lng": 22.45439},{"lat": -34.015280000000004,"lng": 22.452620000000003},{"lat": -34.01505,"lng": 22.45155},{"lat": -34.014900000000004,"lng": 22.45091},{"lat": -34.01323,"lng": 22.45063},{"lat": -34.012570000000004,"lng": 22.4505},{"lat": -34.01212,"lng": 22.450380000000003},{"lat": -34.011610000000005,"lng": 22.45022},{"lat": -34.01146,"lng": 22.45022},{"lat": -34.00869,"lng": 22.449230000000004},{"lat": -34.007650000000005,"lng": 22.44885},{"lat": -34.00459,"lng": 22.44772},{"lat": -34.004380000000005,"lng": 22.44762},{"lat": -34.004360000000005,"lng": 22.4476},{"lat": -34.00274,"lng": 22.447020000000002},{"lat": -33.99978,"lng": 22.44585},{"lat": -33.99839,"lng": 22.44537},{"lat": -33.99794,"lng": 22.445210000000003},{"lat": -33.99732,"lng": 22.444960000000002},{"lat": -33.996680000000005,"lng": 22.444730000000003},{"lat": -33.99531,"lng": 22.444290000000002},{"lat": -33.99396,"lng": 22.443810000000003}];
+    // Custom Overlay for the bus marker
+    function BusMarkerOverlay(position, map, iconUrl) {
+        this.position = position;
+        this.iconUrl = iconUrl;
+        this.div = null;
+        this.setMap(map);
+    }
+    
+    BusMarkerOverlay.prototype = new google.maps.OverlayView();
+    
+    BusMarkerOverlay.prototype.onAdd = function () {
+        const div = document.createElement('div');
+        div.style.position = 'absolute';
+        div.style.width = '100px';
+        div.style.height = '100px';
+        div.style.backgroundImage = `url(${this.iconUrl})`;
+        div.style.backgroundSize = 'cover';
+        div.style.transformOrigin = 'center center';
+    
+        this.div = div;
+    
+        const panes = this.getPanes();
+        panes.overlayImage.appendChild(div);
+    };
+    
+    BusMarkerOverlay.prototype.draw = function () {
+        const overlayProjection = this.getProjection();
+        const position = overlayProjection.fromLatLngToDivPixel(this.position);
+        const div = this.div;
+    
+        div.style.left = `${position.x - 20}px`;
+        div.style.top = `${position.y - 20}px`;
+    };
+    
+    BusMarkerOverlay.prototype.onRemove = function () {
+        if (this.div) {
+            this.div.parentNode.removeChild(this.div);
+            this.div = null;
+        }
+    };
+    
+    BusMarkerOverlay.prototype.updatePosition = function (position, heading) {
+        this.position = position;
+        if (this.div) {
+            const overlayProjection = this.getProjection();
+            const pos = overlayProjection.fromLatLngToDivPixel(this.position);
+            this.div.style.left = `${pos.x - 80}px`;
+            this.div.style.top = `${pos.y - 80}px`;
+            this.div.style.transform = `rotate(${heading}deg)`;
+        }
+    };
+    
+    // Initialize the map and add the bus marker overlay
+    function initializeMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: -34.020525, lng: 22.475539},
+            zoom: 16,
+            gestureHandling: 'greedy'
+        });
+    
+        const busMarkerOverlay = new BusMarkerOverlay(
+            new google.maps.LatLng(routeData[0].lat, routeData[0].lng),
+            map,
+            busIcon.north
+        );
+    
+        const routePath = routeData.map(coord => new google.maps.LatLng(coord.lat, coord.lng));
+        const route = new google.maps.Polyline({
+            path: routePath,
+            geodesic: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+        });
+        
+        route.setMap(map);
+        routes.push(route);
+        
+        let currentIndex = 0;
+        let previousPosition = new google.maps.LatLng(routeData[0].lat, routeData[0].lng);
+    
+        function updateBusPosition() {
+            if (currentIndex < routeData.length) {
+                const currentPosition = new google.maps.LatLng(routeData[currentIndex].lat, routeData[currentIndex].lng);
+    
+                if (previousPosition) {
+                    const heading = getHeading(previousPosition, currentPosition);
+                    busMarkerOverlay.updatePosition(currentPosition, heading);
+                    map.setCenter(currentPosition);
+                }
+    
+                previousPosition = currentPosition;
+                currentIndex++;
+            } else {
+                currentIndex = 0;
+            }
+        }
+    
+        setInterval(updateBusPosition, 1000); // Update every second
+    }
+    
+    function getHeading(fromLatLng, toLatLng) {
+        const lat1 = fromLatLng.lat();
+        const lng1 = fromLatLng.lng();
+        const lat2 = toLatLng.lat();
+        const lng2 = toLatLng.lng();
+    
+        const dLng = lng2 - lng1;
+        const x = Math.cos(lat2) * Math.sin(dLng);
+        const y = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLng);
+        const heading = Math.atan2(x, y) * (180 / Math.PI); // Convert from radians to degrees
+        return (heading + 360) % 360; // Ensure heading is within 0-360 degrees
+    }
+    
+    
+  </script>
+</head>
+<body onload="initializeMap()">
+  <div id="map" style="height: 800px; width: 100%;"></div>
+</body>
+</html>
+

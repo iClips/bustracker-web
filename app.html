@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/app.css">
+    <link rel="stylesheet" href="assets/css/anim.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <h1>
+            <span class="b">B</span>
+            <span class="y">u</span>
+            <span class="g">s</span>
+            <span>&nbsp;</span>
+            <span class="r">T</span>
+            <span class="b">r</span>
+            <span class="y">a</span>
+            <span class="g">c</span>
+            <span class="r">k</span>
+            <span class="b">e</span>
+            <span class="y">r</span>
+        </h1>
+        <div class="action-icons">
+            <div class="notification-alert" onclick="toggleNotification()">
+                <span id="noteCount" class="badge"></span>
+                <i class="fa fa-bell"></i>
+            </div>
+            <div class="profile-dropdown">
+                <img src="assets/images/home/profile_photo.png" alt="Profile Photo" class="profile-photo" onclick="onProfile()">
+                <div id="profile_menu" class="dropdown-content">
+                    <a href="#profile">Profile</a>
+                    <a href="#settings">Settings</a>
+                    <a onclick="onSignOut()">Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="notification-card" id="notificationCard">
+        <ul id="notificationList">
+            <!-- Dynamic content will be added here -->
+        </ul>
+        <div class="close-btn">
+            <button class="btn btn-primary" onclick="hideNotification()">Close</button>
+        </div>
+    </div>
+    <div class="container-fluid no-padding-col">
+        <div class="row no-margin-row">
+            <div class="d-none d-md-block col-md-3 no-padding-col">
+                <!-- Tools Column -->
+                <div class="home-container">
+                    <div class="actions" id="actions1">
+                        <div id="action_container" class="actions-cols">
+                            <div class="pickup action-flex-box">
+                                <div class="action-heading action-flex-child2">
+                                    <img src="assets/images/home/markers/pick.png" id="img_bg_pickup" alt="background image for pickup container" />
+                                    <div class="info">
+                                        <p class="info-title">Boarding</p>
+                                        <p class="info-subtitle" id="pickup_info"></p>
+                                        <p class="info-subtitle" id="pickup_info_eta"></p>
+                                    </div>
+                                </div>
+                                <div id="bg_pickup" class="bg-image bg-pickup action-flex-child1">
+                                    <span>Tap on a bus stop marker to select your Boarding spot.</span>
+                                </div>
+                            </div>
+                            <div class="drop-off pickup action-flex-box">
+                                <div class="action-heading action-flex-child2">
+                                    <img src="assets/images/home/markers/drop.png" id="img_bg_drop_off" alt="background image for drop off container" />
+                                    <div class="info">
+                                        <p class="info-title">Alighting</p>
+                                        <p class="info-subtitle" id="drop_off_info"></p>
+                                        <p class="info-subtitle" id="drop_off_info_eta"></p>
+                                    </div>
+                                </div>
+                                <div id="bg_drop_off" class="bg-image bg-drop-off action-flex-child1">
+                                    <span>Tap on a bus stop marker to select your Alighting spot.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 col-12 no-padding-col">
+                <div class="home-container map-actions-container">
+                    <div class="map-container">
+                        <div id="map" class="map"></div>
+                        <div id="bg_pickup" class="streetview-container"></div> 
+                        <div class="finger" id="finger"></div>
+                        <div id="progressAnimation" class="progress-animation"></div>
+                        <div id="bus_container" class="bus-container">
+                            <button id="close-button" onclick="onCloseBusContainer()">X</button>
+                            <h3>Available Buses</h3>
+                            <div class="skeleton-container" id="skeleton_container">
+                                <div class="skeleton"></div>
+                                <div class="skeleton short"></div>
+                                <div class="skeleton"></div>
+                                <div class="skeleton short"></div>
+                            </div>
+                            <div id="buses_container"></div>
+                        </div>
+                        <div id="reached_container" class="reached-container">
+                            <h1>Destination Reached</h1>
+                            <h2>You have reached your destination.</h2>
+                            <p>Click Close to reset your journey.</p>
+                            <button class="btn btn-primary" onclick="onCloseReachedContainer()">Close</button>
+                        </div>
+                        <div class="cancel-track">
+                            <button type="button" onclick="onCancelTrack()" class="btn btn-outline-success">Cancel</button>
+                        </div>
+                    </div>
+
+                    <div class="d-block d-md-none actions-container no-padding-col no-margin-col">
+                        <!-- Actions Column for small screens -->
+                        <div class="actions" id="actions2">
+                            <!-- Actions content for small screens -->
+                            <div id="action_container" class="actions-cols">
+                                <div class="pickup action-flex-box">
+                                    <div id="bg_pickup_sm" class="bg-image bg-pickup action-flex-child1">
+                                        <span>Tap on a bus stop marker to select your Boarding spot.</span>
+                                    </div>
+                                    <div class="action-heading action-flex-child2">
+                                        <img src="assets/images/home/markers/pick.png" id="img_bg_pickup_sm" alt="background image for pickup container" />
+                                        <div class="info">
+                                            <p class="info-title">Boarding</p>
+                                            <p class="info-subtitle" id="pickup_info_sm"></p>
+                                            <p class="info-subtitle" id="pickup_info_eta_sm"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="drop-off action-flex-box">
+                                    <div id="bg_drop_off_sm" class="bg-image bg-drop-off action-flex-child1">
+                                        <span>Tap on a bus stop marker to select your Alighting spot.</span>
+                                    </div>
+                                    <div class="action-heading action-flex-child2">
+                                        <img src="assets/images/home/markers/drop.png" id="img_bg_drop_off_sm" alt="background image for drop off container" />
+                                        <div class="info">
+                                            <p class="info-title">Alighting</p>
+                                            <p class="info-subtitle" id="drop_off_info_sm"></p>
+                                            <p class="info-subtitle" id="drop_off_info_eta_sm"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="progressAnimationActions" class="progress-animation"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="error-container">
+        <div class="error-message">Access Token Expired</div>
+        <p>Your access token has expired. Please sign in again to continue.</p>
+        <div class="signin-link" onclick="redirectToSignIn()">Click here to sign in</div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2024 Bus Tracker App</p>
+    </footer>
+    <script>
+        (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
+        key: "AIzaSyClWWKY8Cug6fO0UfInONtV-9qPDgcp8HI",
+        v: "beta",
+        
+        });
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/simulation.js"></script>
+</body>
+</html>

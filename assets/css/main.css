@@ -1,0 +1,99 @@
+:root {
+    --shadowCard: 0 0 2px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.14);
+    --borderRadiusCard: 0.5rem;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    background-color: #f0f0f0;
+    margin: 0;
+}
+  
+header {
+    background-color: #1e1e1e;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+}
+  
+header .logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+  
+header nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+  
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+  
+header .sign-in {
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+  
+.hero {
+    text-align: center;
+    padding: 50px 20px;
+    background-image: url('assets/images/landing/how_it_work/download_app.jpeg');
+    background-size: cover;
+    color: white;
+    mix-blend-mode: soft-light;
+}
+  
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+  
+.hero .search-bar {
+    margin: 20px 0;
+}
+  
+.hero .search-bar input {
+    padding: 10px;
+    width: 300px;
+}
+  
+.hero .search-bar button {
+    padding: 10px 20px;
+    background-color: #ff6600;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+  
+.hero .cta {
+    background-color: #ff6600;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}
+  
+.map-view {
+    display: flex;
+}
+  
+.map-view #map {
+    width: 100%;
+  height: 100vh;
+}
+  
+.map-view .sidebar {
+    width: 300px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}

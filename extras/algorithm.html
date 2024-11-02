@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Tracker Algorithm</title>
+    <style>
+        body {
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #007BFF;
+        }
+        pre {
+            font-size: 1.2em;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: auto;
+            max-width: 100%;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bus Tracker Algorithm</h1>
+    <pre>
+// Step 1: Get device location
+function getDeviceLocation() {
+    try {
+        location = getCurrentLocation() // API call to get device location
+        setDeviceMarker(location)
+    } catch (error) {
+        handleLocationError(error)
+    }
+}
+
+// Step 2: Get bus stops, sort by nearest to far and set all stops on the map
+function getAndDisplayBusStops() {
+    busStops = getAllBusStops() // API call to get all bus stops
+    sortedBusStops = sortBusStopsByProximity(busStops, location)
+    setBusStopMarkers(sortedBusStops)
+}
+
+// Step 3: Set marker for device location
+function setDeviceMarker(location) {
+    map.setMarker(location, "You are here")
+}
+
+// Step 4: Handle exception if location not found
+function handleLocationError(error) {
+    alert("Unable to retrieve your location. Please enable location services.")
+    // Set default location or exit
+}
+
+// Step 5: Calculate nearest bus stop and pre-set Pickup Spot
+function calculateNearestBusStop() {
+    nearestBusStop = sortedBusStops[0] // Since the list is sorted
+    setPickupSpot(nearestBusStop)
+}
+
+// Step 6: Prompt user for destination (Drop Off Spot)
+function promptUserForDestination() {
+    destination = getUserInput("Enter your destination:")
+    setDropOffSpot(destination)
+}
+
+// Step 7: Select all buses in selected route (Pickup and Drop Off Spot)
+function selectBusesInRoute(pickupSpot, dropOffSpot) {
+    busesInRoute = getBusesInRoute(pickupSpot, dropOffSpot) // API call to get buses
+    return busesInRoute
+}
+
+// Step 8: List available buses and ETA
+function listAvailableBuses(buses) {
+    availableBuses = []
+    for (bus in buses) {
+        eta = calculateETA(bus)
+        availableBuses.append({bus, eta})
+    }
+    displayAvailableBuses(availableBuses)
+}
+
+// Step 9: When user chooses bus, get realtime tracking data and set on map
+function trackSelectedBus(selectedBus) {
+    realtimeData = getRealtimeTrackingData(selectedBus) // API call to get real-time data
+    updateBusPositionOnMap(realtimeData)
+}
+
+// Step 10: Reset UI when bus is at pickup or farther
+function resetUIWhenBusArrives(selectedBus) {
+    if (isBusAtPickup(selectedBus)) {
+        resetUI()
+    }
+}
+
+// Step 11: Create a reset function and call it when application starts
+function resetUI() {
+    clearMapMarkers()
+    clearBusList()
+    resetInputFields()
+}
+
+// Main function to initialize the app
+function initializeApp() {
+    resetUI()
+    getDeviceLocation()
+    getAndDisplayBusStops()
+    calculateNearestBusStop()
+    promptUserForDestination()
+    pickupSpot = getPickupSpot()
+    dropOffSpot = getDropOffSpot()
+    busesInRoute = selectBusesInRoute(pickupSpot, dropOffSpot)
+    listAvailableBuses(busesInRoute)
+}
+
+// Event listener for bus selection
+function onBusSelected(selectedBus) {
+    trackSelectedBus(selectedBus)
+    resetUIWhenBusArrives(selectedBus)
+}
+
+// Start the application
+initializeApp()
+    </pre>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Themed Website</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bs-primary: #007bff;
+            --bs-secondary: #6c757d;
+            --bs-success: #28a745;
+            --bs-danger: #dc3545;
+            --bs-warning: #ffc107;
+            --bs-info: #17a2b8;
+            --bs-light: #f8f9fa;
+            --bs-dark: #343a40;
+        }
+
+        body {
+            background-color: var(--bs-light);
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .theme-values {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .theme-values h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .theme-values pre {
+            background-color: #f7f7f7;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        .hero {
+            background: linear-gradient(135deg, #007bff, #343a40);
+            color: var(--bs-light);
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .action-container {
+            background-color: var(--bs-light);
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .action-container h4 {
+            color: var(--bs-dark);
+        }
+
+        .action-container p {
+            color: var(--bs-secondary);
+        }
+
+        .action-container .btn-primary {
+            background-color: var(--bs-primary);
+            border-color: var(--bs-primary);
+        }
+
+        .feature {
+            padding: 50px 0;
+            text-align: center;
+        }
+
+        .feature h2 {
+            color: var(--bs-dark);
+        }
+
+        .feature p {
+            color: var(--bs-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <div class="container">
+            <h1>Welcome to Bus Tracker</h1>
+            <p>Real-Time Bus Tracking for Your Convenience</p>
+        </div>
+    </div>
+
+    <div class="container feature">
+        <h2>Key Features</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <h4>Real-Time Tracking</h4>
+                <p>Display live bus locations with accurate arrival times.</p>
+            </div>
+            <div class="col-md-4">
+                <h4>Customizable Alerts</h4>
+                <p>Set personalized notifications for your favorite routes.</p>
+            </div>
+            <div class="col-md-4">
+                <h4>Route Planning</h4>
+                <p>Plan your journey with detailed route information.</p>
+            </div>
+            <div class="col-md-4">
+                <h4>Accessibility Options</h4>
+                <p>Enhanced features for users with disabilities.</p>
+            </div>
+            <div class="col-md-4">
+                <h4>Integration</h4>
+                <p>Sync with other transit systems and apps.</p>
+            </div>
+            <div class="col-md-4">
+                <h4>User Feedback</h4>
+                <p>Provide and view feedback on bus services.</p>
+            </div>
+            <div class="col-md-4">
+                <h4>Cost Savings</h4>
+                <p>Save money with optimized travel routes.</p>
+            </div>
+            <div class="col-md-4">
+                <h4>Environmentally Friendly</h4>
+                <p>Reduce your carbon footprint with public transport.</p>
+            </div>
+            <div class="col-md-4">
+                <h4>Multilingual Support</h4>
+                <p>Available in multiple languages for global users.</p>
+            </div>
+            <div class="col-md-4">
+                <h4>24/7 Customer Service</h4>
+                <p>Get help whenever you need it with our support team.</p>
+            </div>
+        </div>
+    </div>
+    <div class="theme-values">
+        <h2>Theme Values</h2>
+        <p>Copy these values for your application:</p>
+        <pre>
+            /* Colors */
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --info-color: #17a2b8;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+
+            /* Typography */
+            --base-font-size: 16px;
+            --heading-font: 'Arial', sans-serif;
+            --body-font: 'Arial', sans-serif;
+
+            /* Spacing */
+            --base-spacing: 16px;
+            --container-max-width: 1140px;
+        </pre>
+    </div>
+    <div class="container">
+        <div class="action-container">
+            <h4>Take Action</h4>
+            <p>Click the button below to proceed with your action.</p>
+            <button class="btn btn-primary">Proceed</button>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

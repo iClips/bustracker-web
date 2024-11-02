@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StreetView Display</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        
+        .actions-cols {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        @media (min-width: 768px) {
+            .actions-cols {
+                flex-direction: column; /* Side by side on medium and larger screens */
+            }
+            .pickup, .drop-off {
+                width: 100%;
+                height: 50%;
+            }
+        }
+        
+        .pickup, .drop-off {
+            flex: 1;
+            padding: 10px;
+        }
+        
+        .bg-image {
+            background-size: cover;
+            background-position: center;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .action-heading {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .action-heading h3 {
+            margin: 0;
+        }
+        
+        .action-info {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="map" class="map" style="width: 100%; height: 500px;"></div>
+    <div class="actions-cols">
+        <div id="bg_pickup" class="pickup">
+            <div class="bg-image bg-pickup">
+                <div class="action-heading">
+                    <img src="assets/images/home/markers/pick.png" id="img_bg_pickup" alt="background image for pickup container" />
+                    <h3>Boarding Point</h3>
+                </div>
+                <div class="action-info">
+                    <h3 id="pickup_info"></h3>
+                </div>
+            </div>
+        </div>
+        <div class="drop-off">
+            <div class="bg-image bg-drop-off">
+                <div class="action-heading">
+                    <img src="assets/images/home/markers/drop.png" id="img_bg_drop_off" alt="background image for drop off container" />
+                    <h3>Alighting Point</h3>
+                </div>
+                <div id="bg_drop_off" class="action-info">
+                    <h3 id="drop_off_info"></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+     <script>
+        (g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})({
+        key: "AIzaSyClWWKY8Cug6fO0UfInONtV-9qPDgcp8HI",
+        v: "beta",
+        
+        });
+    </script>
+    <script>
+        function captureStreetView(location, imgElement, heading) {
+            console.log(location, imgElement, heading);
+            
+            const panorama = new google.maps.StreetViewPanorama(document.getElementById('bg_pickup'), {
+                position: location,
+                pov: {
+                    heading: heading || 0,
+                    pitch: 10
+                },
+            });
+            
+            map.setStreetView(panorama);
+        
+            // Make sure the panorama view is displayed properly on all devices
+            // window.addEventListener('resize', function() {
+            //     google.maps.event.trigger(panorama, 'resize');
+            // });
+            
+        }
+        
+        // Initialize the map
+        async function initMap() {
+            const { Map } = await google.maps.importLibrary("maps");
+            const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+        
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: -34.020525, lng: 22.475539 },
+                zoom: 16,
+                mapId: "DEMO_MAP_ID",
+                disableDefaultUI: true, 
+                gestureHandling: 'greedy' 
+            });
+        
+            // Example usage
+            captureStreetView({ lat: 41.85, lng: -87.65 }, document.getElementById('img_bg_pickup'), 90);
+        }
+        initMap();
+    </script>
+</body>
+</html>

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Grab A and B Markers for Route</title>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClWWKY8Cug6fO0UfInONtV-9qPDgcp8HI"></script>
+  <script>
+    let map;
+    let markers = [];
+    let directionsService;
+    let directionsRenderer;
+    let routes = [];
+    let direction = 'right';
+
+    let busIconNorth = '';
+    let busIconNorthEast = '../assets/images/home/markers/orange-bus/northeastO.png';
+    let busIconEast = '../assets/images/home/markers/orange-bus/eastO.png';
+    let busIconSouthEast = '../assets/images/home/markers/orange-bus/southeastO.png';
+    let busIconSouth = '../assets/images/home/markers/orange-bus/southO.png';
+    let busIconSouthWest = '../assets/images/home/markers/orange-bus/southwestO.png';
+    let busIconWest = '../assets/images/home/markers/orange-bus/westO.png';
+    let busIconNorthWest = '../assets/images/home/markers/orange-bus/northwestO.png';
+    
+    const busIcon = {
+        north: '../assets/images/home/markers/orange-bus/northO.png',
+        northEast: '../assets/images/home/markers/orange-bus/northeastO.png',
+        east: '../assets/images/home/markers/orange-bus/eastO.png',
+        southEast: '../assets/images/home/markers/orange-bus/southeastO.png',
+        south: '../assets/images/home/markers/orange-bus/southO.png',
+        southWest: '../assets/images/home/markers/orange-bus/southwestO.png',
+        west: '../assets/images/home/markers/orange-bus/westO.png',
+        northWest: '../assets/images/home/markers/orange-bus/northwestO.png',
+    };
+    
+    let routeData = [
+    {
+        "lat": -34.019470000000005,
+        "lng": 22.46694
+    },
+    {
+        "lat": -34.019360000000006,
+        "lng": 22.46636
+    },
+    {
+        "lat": -34.0193,
+        "lng": 22.466040000000003
+    },
+    {
+        "lat": -34.019290000000005,
+        "lng": 22.466
+    },
+    {
+        "lat": -34.019270000000006,
+        "lng": 22.46601
+    },
+    {
+        "lat": -34.01896,
+        "lng": 22.46611
+    },
+    {
+        "lat": -34.01872,
+        "lng": 22.46618
+    },
+    {
+        "lat": -34.01832,
+        "lng": 22.46627
+    },
+    {
+        "lat": -34.01821,
+        "lng": 22.46627
+    },
+    {
+        "lat": -34.01791,
+        "lng": 22.46619
+    },
+    {
+        "lat": -34.01798,
+        "lng": 22.465280000000003
+    },
+    {
+        "lat": -34.017990000000005,
+        "lng": 22.46517
+    },
+    {
+        "lat": -34.017880000000005,
+        "lng": 22.46468
+    },
+    {
+        "lat": -34.017480000000006,
+        "lng": 22.463120000000004
+    },
+    {
+        "lat": -34.01722,
+        "lng": 22.46235
+    },
+    {
+        "lat": -34.017010000000006,
+        "lng": 22.46178
+    },
+    {
+        "lat": -34.01668,
+        "lng": 22.460330000000003
+    },
+    {
+        "lat": -34.01662,
+        "lng": 22.460150000000002
+    },
+    {
+        "lat": -34.01661,
+        "lng": 22.459850000000003
+    },
+    {
+        "lat": -34.016650000000006,
+        "lng": 22.459410000000002
+    },
+    {
+        "lat": -34.0167,
+        "lng": 22.45914
+    },
+    {
+        "lat": -34.01675,
+        "lng": 22.458900000000003
+    },
+    {
+        "lat": -34.016760000000005,
+        "lng": 22.45869
+    },
+    {
+        "lat": -34.01675,
+        "lng": 22.45848
+    },
+    {
+        "lat": -34.01672,
+        "lng": 22.45832
+    },
+    {
+        "lat": -34.016650000000006,
+        "lng": 22.457970000000003
+    },
+    {
+        "lat": -34.01644,
+        "lng": 22.457330000000002
+    },
+    {
+        "lat": -34.01623,
+        "lng": 22.45664
+    },
+    {
+        "lat": -34.01587,
+        "lng": 22.455050000000004
+    },
+    {
+        "lat": -34.015710000000006,
+        "lng": 22.45439
+    },
+    {
+        "lat": -34.015280000000004,
+        "lng": 22.452620000000003
+    },
+    {
+        "lat": -34.01505,
+        "lng": 22.45155
+    },
+    {
+        "lat": -34.014900000000004,
+        "lng": 22.45091
+    },
+    {
+        "lat": -34.01323,
+        "lng": 22.45063
+    },
+    {
+        "lat": -34.012570000000004,
+        "lng": 22.4505
+    },
+    {
+        "lat": -34.01212,
+        "lng": 22.450380000000003
+    },
+    {
+        "lat": -34.011610000000005,
+        "lng": 22.45022
+    },
+    {
+        "lat": -34.01146,
+        "lng": 22.45022
+    },
+    {
+        "lat": -34.00869,
+        "lng": 22.449230000000004
+    },
+    {
+        "lat": -34.007650000000005,
+        "lng": 22.44885
+    },
+    {
+        "lat": -34.00459,
+        "lng": 22.44772
+    },
+    {
+        "lat": -34.004380000000005,
+        "lng": 22.44762
+    },
+    {
+        "lat": -34.004360000000005,
+        "lng": 22.4476
+    },
+    {
+        "lat": -34.00274,
+        "lng": 22.447020000000002
+    },
+    {
+        "lat": -33.99978,
+        "lng": 22.44585
+    },
+    {
+        "lat": -33.99839,
+        "lng": 22.44537
+    },
+    {
+        "lat": -33.99794,
+        "lng": 22.445210000000003
+    },
+    {
+        "lat": -33.99732,
+        "lng": 22.444960000000002
+    },
+    {
+        "lat": -33.996680000000005,
+        "lng": 22.444730000000003
+    },
+    {
+        "lat": -33.99531,
+        "lng": 22.444290000000002
+    },
+    {
+        "lat": -33.99396,
+        "lng": 22.443810000000003
+    }
+];
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: -34.020525, lng: 22.475539},
+            zoom: 16,
+            gestureHandling: 'greedy' 
+        });
+        
+        directionsService = new google.maps.DirectionsService();
+        directionsRenderer = new google.maps.DirectionsRenderer();
+        directionsRenderer.setMap(map);
+        
+        map.addListener('click', function(event) {
+            addMarker(event.latLng);
+            if (markers.length >= 2) {
+                calculateAndDisplayRoute();
+            }
+        });
+        
+        // Initialize the bus marker
+        let busMarker = new google.maps.Marker({
+            position: {
+                lat: -34.01946,
+                lng: 22.46687
+            },
+            map: map,
+            title: 'Test Bus',
+            icon: busIconSouthEast // Image of the bus facing a specific direction
+        });
+        
+        // Create the polyline for the route
+        const routePath = routeData.map(coord => new google.maps.LatLng(coord.lat, coord.lng));
+        const route = new google.maps.Polyline({
+            path: routePath,
+            geodesic: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+        });
+        
+        route.setMap(map);
+        routes.push(route);
+        
+        // Call the function to start moving the bus marker along the route
+        moveBusMarker(routeData, 500, busMarker); // Update every second (1000 ms)
+
+    }
+
+    function addMarker(location) {
+      const marker = new google.maps.Marker({
+        position: location,
+        map: map,
+        label: String.fromCharCode('A'.charCodeAt(0) + markers.length)
+      });
+      markers.push(marker);
+    }
+
+    function clearMarkers() {
+      for (let i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+      }
+      markers = [];
+    }
+
+    function calculateAndDisplayRoute() {
+      if (markers.length < 2) {
+        return;
+      }
+
+      const waypoints = markers.slice(1, markers.length - 1).map(marker => ({
+        location: marker.getPosition(),
+        stopover: true
+      }));
+        
+      const request = {
+        origin: markers[0].getPosition(),
+        destination: markers[markers.length - 1].getPosition(),
+        waypoints: waypoints,
+        travelMode: 'DRIVING'
+      };
+        
+      directionsService.route(request, function(result, status) {
+        if (status === 'OK') {
+          directionsRenderer.setDirections(result);
+          console.log(result);
+          const route = result.routes[0].overview_path.map(point => ({
+            lat: point.lat(),
+            lng: point.lng()
+          }));
+          console.log(route);
+        } else {
+          window.alert('Directions request failed due to ' + status);
+        }
+      });
+    }
+    
+    // Function to get the heading between two points
+    function getHeading(fromLatLng, toLatLng) {
+        const fromLat = fromLatLng.lat();
+        const fromLng = fromLatLng.lng();
+        const toLat = toLatLng.lat();
+        const toLng = toLatLng.lng();
+    
+        const dLat = toLat - fromLat;
+        const dLng = toLng - fromLng;
+    
+        const heading = Math.atan2(dLng, dLat) * (180 / Math.PI); // Convert radians to degrees
+        return heading;
+    }
+    
+    // Function to move the bus marker along the route with correct heading
+    function moveBusMarker(routeData, updateInterval, busMarker) {
+        let currentIndex = 0;
+        let previousPosition = null;
+        let remainingDistance = 1;
+    
+        function updatePosition() {
+            if (currentIndex < routeData.length - 1) {
+                const startPosition = previousPosition || new google.maps.LatLng(routeData[currentIndex].lat, routeData[currentIndex].lng);
+                const endPosition = new google.maps.LatLng(routeData[currentIndex + 1].lat, routeData[currentIndex + 1].lng);
+    
+                const segmentDistance = google.maps.geometry.spherical.computeDistanceBetween(startPosition, endPosition);
+    
+                if (segmentDistance >= remainingDistance) {
+                    const fraction = remainingDistance / segmentDistance;
+                    const newPosition = google.maps.geometry.spherical.interpolate(startPosition, endPosition, fraction);
+    
+                    const heading = getHeading(startPosition, newPosition);
+                    console.log('heading: ' + heading);
+                    updateBusMarkerIcon(busMarker, heading);
+    
+                    busMarker.setPosition(newPosition);
+                    map.setCenter(newPosition);
+                    previousPosition = newPosition;
+                    remainingDistance = 1; // Reset to 1 meter for the next update
+                } else {
+                    previousPosition = endPosition;
+                    remainingDistance -= segmentDistance;
+                    currentIndex++;
+                }
+            } else {
+                currentIndex = 0; // Loop back to the start
+                previousPosition = null;
+                remainingDistance = 1;
+            }
+        }
+    
+       const interval = setInterval(updatePosition, updateInterval);
+    }
+    
+    // function updateBusMarkerIcon(busMarker, heading) {
+    //     const busIcon = getBusIconByHeading(heading);
+    //     busMarker.setIcon(busIcon);
+    // }
+    function updateBusMarkerIcon(busMarker, heading) {
+        // Determine the closest direction based on the heading
+        const direction = getDirectionFromHeading(heading);
+        console.log('direction: ' + direction);
+        // Set the icon based on the determined direction
+        busMarker.setIcon({
+            url: busIcon[direction],
+            scaledSize: new google.maps.Size(80, 80), // Adjust size as needed
+            anchor: new google.maps.Point(0, 0), // Adjust anchor point if needed
+        });
+    
+        // Apply CSS rotation
+        // const iconElement = busMarker.getIcon();
+        // if (!iconElement) {
+        //     console.log('!iconElement');
+        // }
+        // console.log(iconElement.outerHTML);
+        // iconElement.style.transform = `rotate(${heading}deg)`;
+    }
+    
+    // Helper function to get direction from heading
+    // function getDirectionFromHeading(heading) {
+    //     if (heading >= 337.5 || heading < 22.5) return 'north';
+    //     if (heading >= 22.5 && heading < 67.5) return 'northEast';
+    //     if (heading >= 67.5 && heading < 112.5) return 'east';
+    //     if (heading >= 112.5 && heading < 157.5) return 'southEast';
+    //     if (heading >= 157.5 && heading < 202.5) return 'south';
+    //     if (heading >= 202.5 && heading < 247.5) return 'southWest';
+    //     if (heading >= 247.5 && heading < 292.5) return 'west';
+    //     if (heading >= 292.5 && heading < 337.5) return 'northWest';
+    // }
+
+    function getDirectionFromHeading(heading) {
+        // let icon = null;
+        
+        if (heading >= -10 && heading < 10) {
+            return 'north';
+        } else if (heading >= 10 && heading < 67.5) {
+            return 'northEast';
+        } else if (heading >= 67.5 && heading < 112.5) {
+            return 'east';
+        } else if (heading >= 112.5 && heading < 157.5) {
+            return 'southEast';
+        } else if (heading >= 157.5 || heading < -157.5) {
+            return 'south';
+        } else if (heading >= -157.5 && heading < -112.5) {
+            return 'southWest';
+        } else if (heading >= -112.5 && heading < -67.5) {
+            return 'west';
+        } else if (heading >= -67.5 && heading < -10) {
+            return 'northWest';
+        }
+        
+        // console.log(icon, heading);
+        return null;
+    }
+    
+    function getHeading(fromLatLng, toLatLng) {
+        const fromLat = fromLatLng.lat();
+        const fromLng = fromLatLng.lng();
+        const toLat = toLatLng.lat();
+        const toLng = toLatLng.lng();
+    
+        const dLat = toLat - fromLat;
+        const dLng = toLng - fromLng;
+    
+        const heading = Math.atan2(dLng, dLat) * (180 / Math.PI); // Convert radians to degrees
+        return heading;
+    }
+  </script>
+</head>
+<body onload="initMap()">
+  <div id="map" style="height: 800px; width: 100%;"></div>
+</body>
+</html>

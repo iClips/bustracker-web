@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Bus Tracker App Sign In</title>
+        <link rel="stylesheet" href="assets/css/style.css">
+        <link rel="stylesheet" href="assets/css/anim.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    </head>
+    <body class="app-body">
+        <div class="container">
+            <div class="row justify-content-center m-0">
+                <div class="col-10">
+                    <div class="card login-container">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12 col-md-6">
+                                    <h1>
+                                        <span class="b">B</span>
+                                        <span class="y">u</span>
+                                        <span class="g">s</span>
+                                        <span>&nbsp;</span>
+                                        <span class="r">T</span>
+                                        <span class="b">r</span>
+                                        <span class="y">a</span>
+                                        <span class="g">c</span>
+                                        <span class="r">k</span>
+                                        <span class="b">e</span>
+                                        <span class="y">r</span>
+                                    </h1>
+                                    <h2>Sign in</h2>
+                                    <p>to continue to Bus Tracker</p>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <form id="login_form">
+                                        <div class="mb-3">
+                                            <label for="username" class="form-label">Username</label>
+                                            <input type="text" class="form-control" id="username">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="password" class="form-label">Password</label>
+                                            <input type="password" class="form-control" id="password">
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Continue</button>
+                                    </form>
+                                    <p id="errorText" style="color: red;"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="assets/js/signin.js"></script>
+    </body>
+</html>

@@ -1,0 +1,343 @@
+/* Marker styling */
+.marker {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: growShrink 0.5s ease-in-out forwards;
+}
+
+/* Grow-shrink animation */
+@keyframes growShrink {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        transform: translate(-50%, -50%) scale(1.5);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+
+/* CSS for InfoWindow animation */
+@keyframes bounceIn {
+    0% {
+        transform: scale(0.1);
+    }
+    60% {
+        transform: scale(1.2);
+    }
+    80% {
+        transform: scale(0.9);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes bounceOut {
+    0% {
+        transform: scale(1);
+    }
+    20% {
+        transform: scale(0.9);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(0.1);
+    }
+}
+
+
+/* Apply bounceIn animation when InfoWindow is shown */
+.infoWindowPopup {
+    animation: bounceIn 0.5s ease-out;
+}
+
+/* Apply bounceOut animation when InfoWindow is hidden */
+.infoWindowHide {
+    animation: bounceOut 0.5s ease-out;
+    animation-fill-mode: forwards;
+}
+
+/*.actions-container {*/
+    /*background-color: #f8f9fa; */
+/*    padding: 20px;*/
+/*}*/
+
+.actions-container, .map-container {
+    /*box-shadow: 0 0 2px 2px rgb(0 172 255 / 50%), 0 0 5px 2px rgb(0 172 255 / 30%), 0 0 7px 2px rgb(0 172 255 / 20%), 0 0 9px 2px rgb(0 172 255 / 10%);*/
+   
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.actions-container:hover, .map-container:hover {
+    box-shadow: 0 0 3px 2px rgba(110, 180, 20, 0.2), 
+                0 0 5px 2px rgba(110, 180, 20, 0.4), 
+                0 0 7px 2px rgba(110, 180, 20, 0.6), 
+                0 0 9px 2px rgba(110, 180, 20, 0.8);
+}
+
+@keyframes neon-border {
+    0% {
+        box-shadow: 0 0 5px 2px rgba(110, 180, 20, 0.5), 
+                    0 0 10px 2px rgba(110, 180, 20, 0.3), 
+                    0 0 15px 2px rgba(110, 180, 20, 0.2), 
+                    0 0 20px 2px rgba(110, 180, 20, 0.1);
+    }
+    100% {
+        box-shadow: 0 0 10px 2px rgba(110, 180, 20, 0.8), 
+                    0 0 15px 2px rgba(110, 180, 20, 0.6), 
+                    0 0 20px 2px rgba(110, 180, 20, 0.4), 
+                    0 0 25px 2px rgba(110, 180, 20, 0.2);
+    }
+}
+
+.actions-container.clicked, .map-container.clicked {
+    animation: neon-border 0.5s infinite alternate;
+}
+
+/**************** Progress animation ****************/
+.map-container, .actions-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    transform: translateY(0);
+    animation: wobbleAnimation 2s infinite;
+}
+
+.map-container.stop-animation, .actions-container.stop-animation {
+    animation: none; /* Disable animation when this class is added */
+}
+
+.progress-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, 
+        rgba(0, 0, 0, 1) 0%, 
+        rgba(0, 0, 0, 1) 37%, 
+        rgba(255, 255, 255, 1) 40%, 
+        rgba(0, 0, 0, 1) 42%, 
+        rgba(0, 0, 0, 1) 100%);
+    background-size: 400% 400%;
+    animation: gradientAnimation 1s infinite;
+}
+
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+@keyframes wobbleAnimation {
+    0%, 100% { transform: translateY(0); }
+    25% { transform: translateY(-2px); }
+    50% { transform: translateY(2px); }
+    75% { transform: translateY(-2px); }
+}
+
+/************************* Instructions *************************/
+.animation-instruction {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; 
+    z-index: 10; 
+}
+
+.finger {
+    display: none;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: url('../images/home/markers/clickFinger.png') no-repeat center center / cover;
+    z-index: 999;
+    pointer-events: none;
+    transition: transform 1s ease;
+    transform: translateX(-50%);
+}
+
+.start-point {
+    display: none;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: rgba(255, 0, 0, 0.8);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 2s infinite;
+}
+
+/* Pulsing Effect */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.6;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Animated Path */
+.animated-path {
+    position: absolute;
+    width: 2px;
+    height: 100px; /* Adjust height to match path length */
+    background: linear-gradient(to bottom, rgba(255, 0, 0, 0.8) 50%, transparent 50%);
+    background-size: 2px 20px;
+    background-repeat: repeat-y;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: movePath 4s infinite;
+}
+
+@keyframes movePath {
+    0% {
+        top: 40px;
+    }
+    100% {
+        top: 300px; /* Adjust to the final position */
+    }
+}
+
+/* Instruction Text */
+.instruction-text {
+    position: absolute;
+    top: 80px; /* Start position, adjust as needed */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #00b834;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    animation: followPath 4s infinite;
+}
+
+@keyframes followPath {
+    0% {
+        top: 80px;
+    }
+    100% {
+        top: 340px; /* Match the final position of the path */
+    }
+}
+
+.arrow-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 33%;
+}
+
+.arrow-line {
+  width: 80%;
+  height: 2px;
+  border-top: 2px dashed #ff5722;
+  position: relative;
+  animation: dash 1s linear infinite;
+}
+
+.arrow-head {
+    width: 20%;
+    height: 0;
+    border-left: 10px solid #ff5722;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    position: absolute;
+    right: -10px;
+    top: -6px;
+}
+
+@keyframes dash {
+  to {
+    background-position: -100px 0;
+  }
+}
+
+/* Highlight Bus Stops (example for one) */
+.bus-stop {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: blue; /* Default color */
+    border-radius: 50%;
+    animation: highlight 4s infinite;
+}
+
+@keyframes highlight {
+    0%, 80%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.5);
+    }
+}
+
+/***************** Into View ***************************/
+/* Fade-In Effect */
+.content-fade-in {
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.content-fade-in.in-view-fade-in {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.content-fade-in {
+  will-change: opacity, transform;
+}
+
+@media (max-width: 768px) {
+  .content-fade-in {
+    transform: translateY(10px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+}
+
+/********************** Skeleton screen styles ************************/
+.skeleton {
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  margin: 10px 0;
+  height: 20px;
+  width: 100%;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.skeleton.short {
+  width: 60%;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
